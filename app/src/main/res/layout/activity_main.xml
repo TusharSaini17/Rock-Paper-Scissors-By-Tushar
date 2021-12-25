@@ -15,13 +15,14 @@
         android:backgroundTint="#00FFFFFF"
         android:onClick="rpsButton"
         android:scaleType="fitCenter"
-        android:tag="3"
+        android:tag="2"
         android:tint="#00FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/paperButton"
         app:layout_constraintTop_toBottomOf="@+id/userSelectText"
-        app:srcCompat="@drawable/scissor" />
+        app:srcCompat="@drawable/scissor"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
         android:id="@+id/rockButton"
@@ -30,13 +31,14 @@
         android:backgroundTint="#00FFFFFF"
         android:onClick="rpsButton"
         android:scaleType="fitCenter"
-        android:tag="1"
+        android:tag="0"
         android:tint="#00FFFFFF"
         app:layout_constraintBottom_toBottomOf="@+id/paperButton"
         app:layout_constraintEnd_toStartOf="@+id/paperButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/stone" />
+        app:srcCompat="@drawable/stone"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
         android:id="@+id/paperButton"
@@ -46,14 +48,15 @@
         android:backgroundTint="#00FFFFFF"
         android:onClick="rpsButton"
         android:scaleType="fitCenter"
-        android:tag="2"
+        android:tag="1"
         android:tint="#00FFFFFF"
         app:layout_constraintBottom_toBottomOf="@+id/scissorButton"
         app:layout_constraintEnd_toStartOf="@+id/scissorButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/rockButton"
         app:layout_constraintTop_toBottomOf="@+id/userSelectText"
-        app:srcCompat="@drawable/papr" />
+        app:srcCompat="@drawable/papr"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/textView"

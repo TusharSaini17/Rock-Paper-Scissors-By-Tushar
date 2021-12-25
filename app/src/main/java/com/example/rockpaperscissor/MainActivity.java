@@ -1,5 +1,9 @@
 package com.example.rockpaperscissor;
 
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +15,8 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-
+    public SoundPool soundPool;
+    public int M_win,M_lose,lose,win,tie;
     TextView scoreText, wonLostText, userSelectText, compSelectText;
 
     int userScore = 0;
@@ -31,6 +36,25 @@ public class MainActivity extends AppCompatActivity {
        wonLostText.setText("");
         compSelectText.setText("");
         userSelectText.setText("");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+
+            soundPool = new SoundPool.Builder()
+                    .setMaxStreams(2)
+                    .setAudioAttributes(audioAttributes)
+                    .build();
+        } else {
+            soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
+        }
+        M_win = soundPool.load(this, R.raw.victory, 1);
+        M_lose = soundPool.load(this, R.raw.over, 1);
+        win = soundPool.load(this, R.raw.win, 1);
+        lose = soundPool.load(this, R.raw.lose, 1);
+        tie = soundPool.load(this, R.raw.tie, 1);
     }
 
     public void resetButton(View view) {
@@ -58,32 +82,38 @@ public class MainActivity extends AppCompatActivity {
     }
     private void match(int userSelection) {
 
-        int low = 1;
-        int high = 3;
 
 
-        int compSelection = random.nextInt(high) + low;
+
+        int compSelection = random.nextInt(3);
 
 
         if (userSelection == compSelection) {
             wonLostText.setText("It's a Tie !");
-        } else if ( (userSelection - compSelection) % 3 == 1 ) {
-            wonLostText.setText("you Won !");
+            soundPool.autoPause();
+            soundPool.play(tie, 1, 1, 0, 0, 1);
+        } else if (userSelection == 0 && compSelection == 2 || userSelection == 1 && compSelection == 0
+                || userSelection == 2 && compSelection == 1) {
+            wonLostText.setText("You Won !");
+            soundPool.autoPause();
+            soundPool.play(win, 1, 1, 0, 0, 1);
             userScore++;
         } else {
-            wonLostText.setText("you Lost !");
+            wonLostText.setText("You Lost !");
+            soundPool.autoPause();
+            soundPool.play(lose, 1, 1, 0, 0, 1);
             compScore++;
         }
 
 
         switch (compSelection) {
-            case 1:
+            case 0:
                 compSelectText.setText("Rock");
                 break;
-            case 2:
+            case 1:
                 compSelectText.setText("Paper");
                 break;
-            case 3:
+            case 2:
                 compSelectText.setText("Scissor");
                 break;
             default:
@@ -91,13 +121,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         switch (userSelection) {
-            case 1:
+            case 0:
                 userSelectText.setText("Rock");
                 break;
-            case 2:
+            case 1:
                 userSelectText.setText("Paper");
                 break;
-            case 3:
+            case 2:
                 userSelectText.setText("Scissor");
                 break;
             default:
@@ -105,10 +135,14 @@ public class MainActivity extends AppCompatActivity {
         }
         setScoreTextView(userScore, compScore);
     if (userScore== 5){
+        soundPool.autoPause();
+        soundPool.play(M_win, 1, 1, 0, 0, 1);
         openWin();
         reset();
     }
     else if (compScore==5){
+        soundPool.autoPause();
+        soundPool.play(M_lose, 1, 1, 0, 0, 1);
         openlose();
         reset();
     }
@@ -124,4 +158,6 @@ public class MainActivity extends AppCompatActivity {
       losedialog losedialog=new losedialog();
       losedialog.show(getSupportFragmentManager(),"lose dialog");
     }
+
+
 }
